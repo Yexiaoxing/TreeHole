@@ -1,0 +1,134 @@
+<!-- tinymins 2013  http://ZhaiYiMing.CoM -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>控制台 - 人人树洞</title>
+  <link rel="stylesheet" href="css/index-default.css">
+  <link rel="icon"  type="image/jpeg" href="image/favoicon.jpg">
+  <script type="text/javascript" src="js/jquery.1.8.2.min.js"></script>
+</head>
+<body style="min-width: 640px;">
+<div class="header">
+      <div class="widthLimiter">
+		<a href="http://shuhole.sinaapp.com/" class="title">控制台 - 人人树洞</a>
+		<a style="margin:10px 20px;font-size: 14px;color: #F00;font-weight:bold;float:right;" href="admin.php?s=signout&r=changeaccount" target="_self">更换账号/退出登录</a>
+	  </div>
+</div>
+<div class="widthLimiter">
+	<center><h4 class="subtitle">放在树洞里的秘密</h4></center>
+	<hr />
+	<div class = "row" style="min-height:286px;">
+		<?section name=i loop=$hollows?>
+		<div style="margin:10px auto;width:610px;overflow:hidden;" class="form_hollow_info" data-hollowsid="<?$hollows[i].hollow_sid?>" data-enabled="<?$hollows[i].hollow_state?>">
+			<div style="float:left;-webkit-border-radius:10px;width:100px;height:100px;background-image:url(<?$hollows[i].headurl?>);">
+				<div style="-webkit-border-radius:10px;width:100px;height:100px;background-image:url(image/hollow-state-<?$hollows[i].hollow_state?>.png);cursor:pointer;" onclick="page_div=$(this).parents().filter('.form_hollow_info');page_div.data('enabled',(parseInt(page_div.data('enabled'))+1)%2);this.style['background-image']='url(image/hollow-state-'+page_div.data('enabled')+'.png)';"></div>
+			</div>
+			<div style="float:left;margin:0 0 0 5px;-webkit-border-radius:10px;width:500px;height:100px;background-color:#DDD;">
+				<div style="padding:8px 15px 0 10px">
+					<h4 style="margin:0px;font-size:16px;color:#666;float:left;"><?$hollows[i].name?>(<?$hollows[i].page_id?>)</h4>
+					<input type="text" class="class_hollow_title" style="width: 120px; margin: 0px 10px; padding: 0px 3px; font-weight: bold; font-size: 16px; color: rgb(102, 102, 102); background-color: rgb(221, 221, 221); border: none; float: left;" value="<?$hollows[i].hollow_title?>" palceholder="树洞名称" onmouseover="this.style['background-color']='#EEE'" onmouseout="this.style['background-color']='#DDD'" />
+					<a style="margin:0;font-size:16px;color:#03F;font-weight:bold;float:right;" href="http://hollow.sinaapp.com/?sid=<?$hollows[i].hollow_sid?>" target="_blank">点击获取地址</a>
+					<div style="clear:both;"></div>
+				</div>
+				<div style="padding:10px 15px 0 20px">
+					<h4 style="margin:0;font-size:12px;color:#666;float:left;">前缀：</h4>
+					<input type="text" class="class_data_prefix" style="width: 270px; margin: 0px; padding: 0px 3px; font-weight: bold; font-size: 12px; color: rgb(102, 102, 102); background-color: rgb(221, 221, 221); border: none; float: left;" value="<?$hollows[i].data_prefix?>" palceholder="匿名状态添加前缀" onmouseover="this.style['background-color']='#EEE'" onmouseout="this.style['background-color']='#DDD'" />
+					<h4 style="margin:0;font-size:12px;color:#666;float:right;">(<?$hollows[i].hollow_count?>)剩余条数：<?$hollows[i].expire_num?>条</h4>
+					<div style="clear:both;"></div>
+				</div>
+				<div style="padding:5px 15px 0 20px">
+					<h4 style="margin:0;font-size:12px;color:#666;float:left;">后缀：</h4>
+					<input type="text" class="class_data_suffix" style="width: 270px; margin: 0px; padding: 0px 3px; font-weight: bold; font-size: 12px; color: rgb(102, 102, 102); background-color: rgb(221, 221, 221); border: none; float: left;" value="<?$hollows[i].data_suffix?>" palceholder="匿名状态添加后缀" onmouseover="this.style['background-color']='#EEE'" onmouseout="this.style['background-color']='#DDD'" />
+					<h4 style="margin:0;font-size:12px;color:#666;float:right;">包月期限：<?$hollows[i].expire_time_formated?></h4>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<?/section?>
+		<br/>
+		<center><a class="radius button" id="btn_send" href="#" style="width:530px">保存设置</a></center>
+		<br/>
+		<center><div id="success" class="alert-box success" style="visibility:hidden;">保存成功！</div></center>
+	</div>
+	<hr/>
+	<center><a href="http://weibo.com/zymah" target="_blank" style="color:#444;">About</a></center>
+</div>
+<script type="text/javascript">
+	function closeSuccess(){
+		$('#success').css('visibility','hidden');
+	}
+	$("#btn_send").click(function(){
+		if($("#btn_send").css("cursor")=="wait") return;
+		$("#success").attr('class', 'alert-box');
+		$('#success').text("设置提交中..");
+		$('#success').css('visibility','visible');
+		$("#btn_send").css("cursor","wait");
+		json_data_string = "[";
+		$(".form_hollow_info").each(function(i){
+			if(i!=0) json_data_string = json_data_string + ',';
+			json_data_string = json_data_string + '{"hollow_sid":"' + $(this).data('hollowsid').toString().replace(/\\/gi,'\\\\').replace(/"/gi,'\\"');
+			json_data_string = json_data_string + '","hollow_title":"' + $(this).find('.class_hollow_title').val().toString().replace(/\\/gi,'\\\\').replace(/"/gi,'\\"');
+			json_data_string = json_data_string + '","data_prefix":"' + $(this).find('.class_data_prefix').val().toString().replace(/\\/gi,'\\\\').replace(/"/gi,'\\"');
+			json_data_string = json_data_string + '","data_suffix":"' + $(this).find('.class_data_suffix').val().toString().replace(/\\/gi,'\\\\').replace(/"/gi,'\\"');
+			json_data_string = json_data_string + '","hollow_state":' + $(this).data('enabled').toString().replace(/\\/gi,'\\\\').replace(/"/gi,'\\"');
+			json_data_string = json_data_string + '}';
+		});
+		json_data_string = json_data_string + "]";
+		$.ajax({
+			url: "admin.php",
+			type: "post",
+			data: {
+			's':'setpage',
+			'data':json_data_string
+			},
+			success: function(resultData){
+				$("#btn_send").css("cursor","pointer");
+				if(resultData.indexOf('失败')==-1){
+					$("#success").attr('class', 'alert-box success');
+					$('#success').text("保存成功");
+					$('#status').val('');
+					$('#success').css('visibility','visible');
+					setTimeout(closeSuccess,5000);
+				}
+				else{
+					if(resultData=="") resultData ="网络错误。";
+					$("#success").attr('class', 'alert-box alert');
+					$('#success').text("保存失败:"+resultData);
+					$('#success').css('visibility','visible');
+					setTimeout(closeSuccess,15000);
+				}
+			},
+			error:function(){
+				$("#btn_send").css("cursor","pointer");
+				$("#success").attr('class', 'alert-box alert');
+				$('#success').text("保存失败");
+				$('#success').css('visibility','visible');
+				setTimeout(closeSuccess,15000);
+			}
+		}); 
+
+	});
+</script>
+  
+  <script type="text/javascript">
+  $(window).load(function() {
+	var theWindow        = $(window),	    			    		
+	resizeBg = function() {
+		if ( theWindow.width() < 700 ) {
+		    $('.widthLimiter').css({'align':'center','width':'auto'});
+			$('#success').css({width:theWindow.width()-25+'px'});
+		} else {
+		    $('.widthLimiter').css({'align':'left','width':'640px'});
+			$('#success').css({width:''});
+		}
+					
+	};
+	resizeBg();
+	theWindow.resize(resizeBg).trigger("resize");
+});
+</script>
+
+</body>
+</html>

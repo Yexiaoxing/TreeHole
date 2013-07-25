@@ -1,0 +1,10 @@
+---
+name: hollow
+version: 2
+handle:  
+ - rewrite: if( path ~ "^([A-Za-z0-9]{8})-{0,1}([A-Za-z0-9]{4})-{0,1}([A-Za-z0-9]{4})-{0,1}([A-Za-z0-9]{4})-{0,1}([A-Za-z0-9]{12})$" ) goto "/index.php?type=sid&sid=RR{$1-$2-$3-$4-$5}"
+ - rewrite: if( path ~ "^([A-Za-z0-9]{2})-{0,1}([A-Za-z0-9]{8})-{0,1}([A-Za-z0-9]{4})-{0,1}([A-Za-z0-9]{4})-{0,1}([A-Za-z0-9]{4})-{0,1}([A-Za-z0-9]{12})$" ) goto "/index.php?type=sid&sid=$1{$2-$3-$4-$5-$6}"
+ - rewrite: if( path ~ "^([A-Za-z0-9\_]{2,10})$" ) goto "/index.php?type=name&sid=$1"
+ - rewrite: if( query_string ~ "^(.*?)guid=(.*?)$" && path ~ "^(.*?)$") goto "/$1?%1sid=%2"
+
+...

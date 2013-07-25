@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- tinymins 2013  http://ZhaiYiMing.CoM -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title><?=$hollow_title?></title>
+  <link rel="stylesheet" href="css/index-default.css">
+  <link rel="icon"  type="image/jpeg" href="image/favoicon.jpg">
+</head>
+<body>
+<div class="header">
+      <div class="widthLimiter"><a href="http://shuhole.sinaapp.com" class="title"><?=$hollow_title?></a></div>
+</div>
+<div class="widthLimiter">
+	<center><h4 class="subtitle">放在树洞里的秘密</h4></center>
+	<hr />
+
+	<br/>
+	<div class = "row" style="height:286px;">
+		<center><textarea rows="4" id="status" type="text" placeholder="有什么想说的吗？" ></textarea></center>
+		<br/>
+		<center><a class="radius button" id="btn_send" href="#">告诉树洞</a></center>
+		<br/>
+		<center><div id="success" class="alert-box success" style="visibility:hidden;">发送成功！</div></center>
+		
+		<center><h4 class="subtitle" style="text-shadow: 0 1px 0 #D6D6D6;">状态会实时匿名发布到</h4></center>
+		<center><h4><a class="pagelink" href="<?=$page_lnk?>" target="_blank"><strong><?=$page_lnk_tip?></strong></a></h4></center>
+	</div>
+	<br/>
+	<br/>
+
+	<hr/>
+	<center><a href="http://weibo.com/zymah" target="_blank" style="color:#444;">About</a></center>
+	<?=$analytics_code?>
+</div>
+  <script type="text/javascript" src="js/jquery.1.8.2.min.js"></script>
+  <script type="text/javascript">
+   function closeSuccess(){
+        $('#success').css('visibility','hidden');
+   }
+$("#btn_send").click(function(){
+	if($("#btn_send").css("cursor")=="wait") return;
+    $("#success").attr('class', 'alert-box');
+    $('#success').text("树洞发送中..");
+    $('#success').css('visibility','visible');
+	if($('#status').val()=="") {$("#success").attr('class', 'alert-box alert'); $('#success').text("先写点什么吧.."); setTimeout(closeSuccess,3000); return;}
+	$("#btn_send").css("cursor","wait");
+    $.ajax({
+      url: "sendMsg.php",
+      type: "post",
+      data: {'s':encodeURI($('#status').val()),'sid':'<?=$sid?>'},
+      success: function(resultData){
+			$("#btn_send").css("cursor","pointer");
+            if(resultData=='1'){
+                $("#success").attr('class', 'alert-box success');
+                $('#success').text("发送成功");
+                $('#status').val('');
+                $('#success').css('visibility','visible');
+                setTimeout(closeSuccess,3000);
+            }
+            else{
+                if(resultData=="") resultData ="Sorry，API数量限制，请5分钟以后试试吧。";
+                $("#success").attr('class', 'alert-box alert');
+                $('#success').text("发送失败:"+resultData);
+                $('#success').css('visibility','visible');
+                setTimeout(closeSuccess,8000);
+            }
+            
+      },
+      error:function(){
+			$("#btn_send").css("cursor","pointer");
+            $("#success").attr('class', 'alert-box alert');
+            $('#success').text("发送失败");
+            $('#success').css('visibility','visible');
+            setTimeout(closeSuccess,8000);
+      }
+    }); 
+    
+});
+  </script>
+  
+  <script type="text/javascript">
+  $(window).load(function() {
+	var theWindow        = $(window),	    			    		
+	resizeBg = function() {
+		if ( theWindow.width() < 700 ) {
+		    $('.widthLimiter').css({'align':'center','width':'auto'});
+			$('#success').add('#status').css({width:theWindow.width()-25+'px'});
+			$('#btn_send').css({width:theWindow.width()-50+'px'});
+		} else {
+		    $('.widthLimiter').css({'align':'left','width':'640px'});
+			$('#btn_send').add('#success').add('#status').css({width:''});
+		}
+					
+	}
+	theWindow.resize(resizeBg).trigger("resize");
+});
+</script>
+
+</body>
+</html>

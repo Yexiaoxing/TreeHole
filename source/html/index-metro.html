@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- tinymins 2013  http://ZhaiYiMing.CoM -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title><?=$hollow_title?></title>
+  <link rel="icon" type="image/jpeg" href="image/favoicon.jpg">
+  <link rel="stylesheet" href="css/index-metro.css">
+  <!--script type="text/javascript" src="js/jquery.1.4.2.min.js"></script-->
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="js/jquery.color.animation.js"></script>
+  <script type="text/javascript" src="js/index-metro.js"></script>
+</head>
+<body>
+	<div class="class_div_header">
+		<div class="class_div_header_resize margin_0_auto width_760">
+			<div class="class_title_font class_title class_pointer"><?=$hollow_title?></div>
+		</div>
+	</div>
+	<div class="class_div_content">
+		<center><div class="class_title_font class_subtitle"><?=$hollow_subtitle?></div></center>
+		<center><textarea class="class_textarea_status" placeholder="有什么想说的吗？" data-sid="<?=$sid?>"></textarea></center>
+		<center><div class="class_title_font class_button class_pointer" id="btn_send" oncontextmenu="window.event.returnValue=false" onkeypress="window.event.returnValue=false" onkeydown="window.event.returnValue=false" onkeyup="window.event.returnValue=false" ondragstart="window.event.returnValue=false" onselectstart="event.returnValue=false">告诉树洞</div></center>
+		<center><pre class="class_title_font class_div_alert class_div_alert_success" id="id_div_alert"><a id="id_a_tip" style="visibility:hidden;display:inline;">发送成功！</a></pre></center>
+		
+		<center>
+			<a class="class_title_font class_tip">状态会实时匿名发布到</a>
+			<a class="class_title_font class_tip_spliter">&nbsp;</a>
+			<a class="class_title_font class_page_lnk class_pointer" href="<?=$page_lnk?>" target="_blank"><?=$page_lnk_tip?></a>
+		</center>
+	</div>
+	<div class="class_div_footer">
+		<div style="visibility:hidden;width:0;height:0;"><?=$analytics_code?></div>
+		<center><a class="class_title_font class_about class_pointer" href="http://weibo.com/zymah" target="_blank">about</a></center>
+	</div>
+</body>
+</html>

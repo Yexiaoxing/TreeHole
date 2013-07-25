@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+Sitemap: http://hollow.sinaapp.com/sitemap.xml
+Sitemap: http://hollow.sinaapp.com/make_hollow_sitemap.php
