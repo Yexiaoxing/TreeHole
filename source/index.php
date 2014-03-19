@@ -7,7 +7,15 @@ $sid = preg_replace('/^[\-\{]*([A-Za-z0-9]{2})[\{\-]{0,1}([A-Za-z0-9]{8})-{0,1}(
 if(empty($sid)) { die("Param Miss."); }
 
 require_once('inc/TmsPageManager.class.php');
-$pm = new TmsPageManager();
+try{
+    $pm = new TmsPageManager();
+} catch (Exception $err) {
+    echo("<pre>");
+    if(stripos($err->getMessage(),"SQL")!==false)
+        echo("连接数据库出现错误，请稍后再试。\n对于给您带来的不便深表歉意，我们会尽快修复。\n");
+    echo($err->getMessage()."\n");
+    die("--------------\nERROR !</pre>");
+}
 switch( $type ) {
 case 'name':
 	$key = 'hollow_sname';
